@@ -1,0 +1,11 @@
+server:
+  port: 8891
+spring:
+  application:
+    name: ace-syslog
+
+  kafka:
+    bootstrap-servers: 192.168.5.101:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer1
