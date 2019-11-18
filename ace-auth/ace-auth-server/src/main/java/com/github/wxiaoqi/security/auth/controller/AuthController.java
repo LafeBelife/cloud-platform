@@ -24,15 +24,15 @@ public class AuthController {
     private AuthService authService;
 
     @RequestMapping(value = "token", method = RequestMethod.POST)
-    public ObjectRestResponse<String> createAuthenticationToken(
+    public ObjectRestResponse createAuthenticationToken(
             @RequestBody JwtAuthenticationRequest authenticationRequest) throws Exception {
-        log.info(authenticationRequest.getUsername()+" require logging...");
+        log.info(authenticationRequest.getUsername() + " require logging...");
         final String token = authService.login(authenticationRequest);
         return new ObjectRestResponse<>().data(token);
     }
 
     @RequestMapping(value = "refresh", method = RequestMethod.GET)
-    public ObjectRestResponse<String> refreshAndGetAuthenticationToken(
+    public ObjectRestResponse refreshAndGetAuthenticationToken(
             HttpServletRequest request) throws Exception {
         String token = request.getHeader(tokenHeader);
         String refreshedToken = authService.refresh(token);

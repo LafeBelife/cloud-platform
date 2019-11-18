@@ -5,8 +5,8 @@ package com.github.wxiaoqi.security.common.msg;
  */
 public class ObjectRestResponse<T> extends BaseResponse {
 
-    T data;
-    boolean rel;
+    private T data;
+    private boolean rel;
 
     public boolean isRel() {
         return rel;

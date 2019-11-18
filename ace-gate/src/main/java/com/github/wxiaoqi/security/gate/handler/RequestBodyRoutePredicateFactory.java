@@ -46,6 +46,7 @@ public class RequestBodyRoutePredicateFactory
     protected static final Log LOGGER = LogFactory.getLog(ReadBodyPredicateFactory.class);
     private static final List<HttpMessageReader<?>> messageReaders = HandlerStrategies.withDefaults().messageReaders();
     public static final String REQUEST_BODY_ATTR = "requestBodyAttr";
+
     public RequestBodyRoutePredicateFactory() {
         super(Config.class);
     }

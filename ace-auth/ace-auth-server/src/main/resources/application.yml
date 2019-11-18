@@ -66,13 +66,14 @@ feign:
 ribbon:
   eureka:
     enabled: true
-  ReadTimeout: 60000
+  ReadTimeout: 120000
   ConnectTimeout: 60000
   MaxAutoRetries: 0
   MaxAutoRetriesNextServer: 1
   OkToRetryOnAllOperations: false
 
 hystrix:
+  shareSecurityContext: true
   threadpool:
     default:
       coreSize: 1000 ##并发执行的最大线程数，默认10

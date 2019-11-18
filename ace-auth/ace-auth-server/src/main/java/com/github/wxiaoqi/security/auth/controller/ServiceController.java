@@ -24,7 +24,7 @@ public class ServiceController extends BaseController<ClientBiz,Client>{
 
     @RequestMapping(value = "/{id}/client", method = RequestMethod.GET)
     @ResponseBody
-    public ObjectRestResponse<ClientService> getUsers(@PathVariable int id){
+    public ObjectRestResponse getUsers(@PathVariable int id){
         return new ObjectRestResponse<ClientService>().rel(true).data(baseBiz.getClientServices(id));
     }
 }
