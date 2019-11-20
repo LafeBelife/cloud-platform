@@ -38,6 +38,7 @@
         <module>ace-control</module>
         <module>ace-modules</module>
         <module>ace-foreign</module>
+        <module>ace-demo</module>
     </modules>
     <packaging>pom</packaging>
     <developers>
