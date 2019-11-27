@@ -11,6 +11,11 @@ public interface ElasticsearchConstant {
      * es 配置文件
      */
     String ES_PROP = "elasticsearch.properties";
+    String ES_PROP_LOCAL = "local-es.properties";
+    /**
+     * 登录信息
+     */
+    String ES_UP = "xpack.security.user";
     /**
      * 集群节点地址
      */

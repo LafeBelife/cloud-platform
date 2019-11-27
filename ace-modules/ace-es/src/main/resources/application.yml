@@ -1,5 +1,15 @@
 spring:
-  data:
-    elasticsearch:
-      cluster-name: hba
-      cluster-nodes: 127.0.0.1:9310
+  application:
+    name: ace-es
+#  data:
+#    elasticsearch:
+#      cluster-name: hba
+#      cluster-nodes: 127.0.0.1:9310
+
+server:
+  port: 8895
+
+logging:
+  level:
+    root: info,error
+  file: logs/app.log

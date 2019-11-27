@@ -39,6 +39,7 @@
         <module>ace-modules</module>
         <module>ace-foreign</module>
         <module>ace-demo</module>
+        <module>ace-bigdata-log</module>
     </modules>
     <packaging>pom</packaging>
     <developers>
