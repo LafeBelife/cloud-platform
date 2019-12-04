@@ -5,16 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.github.wxiaoqi</groupId>
-        <artifactId>ace-security</artifactId>
+        <artifactId>ace-demo</artifactId>
         <version>2.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>ace-demo</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>ace-bootdemo</module>
-        <module>ace-tool-demo</module>
-    </modules>
+    <artifactId>ace-tool-demo</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.github.wxiaoqi</groupId>
+            <artifactId>ace-common</artifactId>
+            <version>2.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

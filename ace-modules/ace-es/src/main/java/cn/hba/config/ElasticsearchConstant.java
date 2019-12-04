@@ -10,12 +10,8 @@ public interface ElasticsearchConstant {
     /**
      * es 配置文件
      */
-    String ES_PROP = "elasticsearch.properties";
-    String ES_PROP_LOCAL = "local-es.properties";
-    /**
-     * 登录信息
-     */
-    String ES_UP = "xpack.security.user";
+    String AUTH_ES = "auth-es.properties";
+    String ES = "es.properties";
     /**
      * 集群节点地址
      */
@@ -28,4 +24,12 @@ public interface ElasticsearchConstant {
     String INTERVAL = "client.transport.nodes_sampler_interval";
     String TIMEOUT = "client.transport.ping_timeout";
     String IGNORE = "client.transport.ignore_cluster_name";
+    String USERNAME = "cluster.username";
+    String PASSWORD = "cluster.password";
+    String EXCLUDE_INDEX = "exclude_index";
+    String INCLUDE_INDEX = "include_index";
+    String INDEX_SIZE = "index_size";
+    String ES_COPY = "es-copy.properties";
+
+
 }

@@ -19,6 +19,9 @@ import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * es 配置初始化
@@ -28,25 +31,29 @@ import java.net.UnknownHostException;
  */
 @Slf4j
 public class ElasticsearchBase {
-    private JSONObject addr;
 
     /**
-     * 初始化 es client
+     * 初始化 带权限登录 es client
      *
      * @return TransportClient
      */
-    public RestClient init() {
+    public RestClient authInit() {
         try {
-
+            Props props = new Props(ElasticsearchConstant.AUTH_ES);
             final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
             credentialsProvider.setCredentials(AuthScope.ANY,
-                    new UsernamePasswordCredentials("admin", "es@1312202"));
-
+                    new UsernamePasswordCredentials(
+                            props.getStr(ElasticsearchConstant.USERNAME), props.getStr(ElasticsearchConstant.PASSWORD)));
+            String addrMap = props.getStr(ElasticsearchConstant.ADDR_MAP);
+            List<HttpHost> list = new LinkedList<>();
+            HttpHost[] hosts = new HttpHost[10];
+            AtomicInteger i = new AtomicInteger(0);
+            JSONUtil.parseObj(addrMap).forEach((k, v) -> hosts[i.getAndIncrement()] = (new HttpHost(k, NumberUtil.parseInt(String.valueOf(v)))));
             // 该方法接收HttpAsyncClientBuilder的实例作为参数，对其修改后进行返回
-            RestClientBuilder builder = RestClient.builder(new HttpHost("192.168.202.13", 9210))
-                    .setHttpClientConfigCallback(httpClientBuilder -> {
-                        return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);//提供一个默认凭据
-                    });
+            RestClientBuilder builder = RestClient.builder(hosts).setHttpClientConfigCallback(build -> {
+                //提供一个默认凭据
+                return build.setDefaultCredentialsProvider(credentialsProvider);
+            });
             return builder.build();
         } catch (Exception e) {
             log.error("加载es集群配置失败", e);
@@ -54,10 +61,15 @@ public class ElasticsearchBase {
         return null;
     }
 
-    public TransportClient initLocal() {
+    /**
+     * 初始化普通es
+     *
+     * @return TransportClient
+     */
+    public TransportClient esInit() {
         try {
             Settings.Builder builder = Settings.builder();
-            this.loadEsProp(builder,ElasticsearchConstant.ES_PROP_LOCAL);
+            JSONObject addr = this.loadEsProp(builder, ElasticsearchConstant.ES);
             TransportClient transportClient = new PreBuiltTransportClient(builder.build());
             addr.forEach((ip, port) -> {
                 try {
@@ -79,7 +91,7 @@ public class ElasticsearchBase {
      *
      * @param builder Settings.Builder
      */
-    private void loadEsProp(Settings.Builder builder,String  pro) {
+    private JSONObject loadEsProp(Settings.Builder builder, String pro) {
         Props prop = Props.getProp(pro);
         if (prop.containsKey(ElasticsearchConstant.NAME)) {
             builder.put(ElasticsearchConstant.NAME, prop.getStr(ElasticsearchConstant.NAME));
@@ -96,10 +108,7 @@ public class ElasticsearchBase {
         if (prop.containsKey(ElasticsearchConstant.IGNORE)) {
             builder.put(ElasticsearchConstant.IGNORE, prop.getBool(ElasticsearchConstant.IGNORE, true));
         }
-        if (prop.containsKey(ElasticsearchConstant.ES_UP)){
-            builder.put(ElasticsearchConstant.ES_UP, prop.getStr(ElasticsearchConstant.ES_UP));
-        }
         String addrStr = prop.getStr(ElasticsearchConstant.ADDR_MAP);
-        addr = JSONUtil.parseObj(addrStr);
+        return JSONUtil.parseObj(addrStr);
     }
 }

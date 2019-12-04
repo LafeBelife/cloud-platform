@@ -350,98 +350,6 @@ public class ElasticSearchUtil {
         }
 
         /**
-         * 带有搜索条件的聚合查询（聚合相当于关系型数据库里面的group by）
-         *
-         * @param index 索引
-         * @param type  类型
-         * @return Map<String, Long>
-         */
-        public Map<String, Long> searchBucketsAggregation(String index, String type) {
-            long total = 0;
-            Map<String, Long> rtnMap = new HashMap<>(10);
-            SearchRequestBuilder searchRequestBuilder = client.prepareSearch(index).setTypes(type);
-
-            //搜索条件
-            String dateStr = DateUtil.today();
-            BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-            /*queryBuilder.must(QueryBuilders.matchQuery("source", "resource"))精确匹配*/
-            queryBuilder.filter(QueryBuilders.boolQuery()
-                    .must(QueryBuilders.rangeQuery("logTime")
-                            .gte(dateStr + "000000")
-                            //时间为当天
-                            .lte(dateStr + "235959")
-                            //时间匹配格式
-                            .format("yyyyMMddHHmmss")));
-            // 聚合分类（以告警类型分类）
-            TermsAggregationBuilder teamAggBuilder = AggregationBuilders.terms("source_count").field("source.keyword");
-            searchRequestBuilder.addAggregation(teamAggBuilder);
-            // 不指定 "size":0 ，则搜索结果和聚合结果都将被返回,指定size：0则只返回聚合结果
-            searchRequestBuilder.setSize(0);
-            searchRequestBuilder.setQuery(queryBuilder);
-            SearchResponse response = searchRequestBuilder.execute().actionGet();
-
-            // 聚合结果处理
-            Terms genders = response.getAggregations().get("source_count");
-            for (Terms.Bucket entry : genders.getBuckets()) {
-                // Term
-                Object key = entry.getKey();
-                // Doc count
-                Long count = entry.getDocCount();
-                rtnMap.put(key.toString(), count);
-            }
-            if (!rtnMap.isEmpty()) {
-                if (!rtnMap.containsKey("system")) {
-                    rtnMap.put("system", 0L);
-                }
-                if (!rtnMap.containsKey("resource")) {
-                    rtnMap.put("resource", 0L);
-                }
-                if (!rtnMap.containsKey("scheduler")) {
-                    rtnMap.put("scheduler", 0L);
-                }
-                total = rtnMap.get("system") + rtnMap.get("resource") + rtnMap.get("scheduler");
-            }
-            if (total != 0) {
-                rtnMap.put("total", total);
-            }
-            return rtnMap;
-        }
-
-        /**
-         * 当日流数据总量汇总
-         *
-         * @param dataworkerType 数据工作类型
-         * @return Map<String, Long>
-         */
-        public Map<String, Long> searchBucketsAggregation(String index, String type, String dataworkerType) {
-            Map<String, Long> rtnMap = new HashMap<>(10);
-            long count = 0;
-            SearchRequestBuilder searchRequestBuilder = client.prepareSearch(index).setTypes(type);
-
-            //搜索条件
-            String dateStr = DateUtil.today();
-            BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-            queryBuilder.must(QueryBuilders.matchQuery("dataworkerType", dataworkerType))
-                    .filter(QueryBuilders.boolQuery()
-                            .must(QueryBuilders.rangeQuery("logTime")
-                                    .gte(dateStr + "000000")
-                                    .lte(dateStr + "235959")
-                                    .format("yyyyMMddHHmmss")));
-            searchRequestBuilder.setQuery(queryBuilder);
-            SearchResponse response = searchRequestBuilder.execute().actionGet();
-
-            SearchHit[] hits = response.getHits().getHits();
-            for (SearchHit searchHit : hits) {
-                Object object = searchHit.getSourceAsMap().get("count");
-                if (StrUtil.isNotBlank(String.valueOf(object))) {
-                    count += Long.parseLong(object.toString());
-                }
-            }
-            rtnMap.put(dataworkerType + "Total", count);
-            return rtnMap;
-        }
-
-        /**
          * 读取索引类型表指定列名的平均值
          *
          * @param avgField 聚合字段
@@ -463,6 +371,5 @@ public class ElasticSearchUtil {
         public void close() {
             client.close();
         }
-
     }
 }
