@@ -40,6 +40,8 @@
         <module>ace-foreign</module>
         <module>ace-demo</module>
         <module>ace-bigdata-log</module>
+        <module>wbw-study</module>
+        <module>wbw-study</module>
     </modules>
     <packaging>pom</packaging>
     <developers>
