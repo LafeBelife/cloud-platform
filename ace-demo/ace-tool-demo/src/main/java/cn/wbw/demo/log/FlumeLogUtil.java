@@ -19,6 +19,7 @@ import java.util.Map;
  */
 @Log4j2
 public class FlumeLogUtil {
+
     /**
      * 根据文件夹路径写入数据
      *
@@ -33,7 +34,7 @@ public class FlumeLogUtil {
         final String finalFolder = FileUtil.getAbsolutePath(folder);
         map.forEach((k, v) -> {
             String path = finalFolder + File.separator + k + ".log";
-            FileUtil.writeLines(v, path, CharsetUtil.UTF_8);
+            FileUtil.writeLines(v, path, CharsetUtil.UTF_8,true);
             log.info("文件写入成功:\t{}", path);
         });
     }
@@ -55,8 +56,8 @@ public class FlumeLogUtil {
         return map;
     }
 
-    private static final String IP = "- {2}ip 地址:";
-    private static final String SYSLOG = "- {2}syslog 信息:";
+    private static final String IP = "-  ip 地址:";
+    private static final String SYSLOG = "-  syslog 信息:";
 
     /**
      * 处理每一行数据
@@ -74,8 +75,11 @@ public class FlumeLogUtil {
                 }
                 try {
                     do {
+                        if (i == list.size() - 1) {
+                            return;
+                        }
                         logLine = list.get(++i);
-                    } while (logLine.contains(SYSLOG));
+                    } while (!logLine.contains("-  syslog 信息:"));
                     String syslog = StrUtil.trim(logLine.split(SYSLOG)[1]);
                     map.get(ip).add(syslog);
                 } catch (Exception e) {
@@ -86,6 +90,13 @@ public class FlumeLogUtil {
         }
     }
 
+    /**
+     * 根据文件夹内文件日志生成新的数据到指定文件夹
+     *
+     * @param redFolder   读取文件夹
+     * @param suffix      后缀
+     * @param writeFolder 写入文件夹
+     */
     public static void writeLogByFolder(String redFolder, String suffix, String writeFolder) {
         if (!FileUtil.isDirectory(redFolder)) {
             redFolder = FileUtil.mkdir(redFolder).getAbsolutePath();
@@ -104,6 +115,6 @@ public class FlumeLogUtil {
 
     public static void main(String[] args) {
         writeLogByFolder("F:\\Desktop\\2019-11-28-北京-安管\\北京-es-采集\\原始日志\\flume日志"
-                , ".log", "F:\\Desktop\\2019-11-28-北京-安管\\北京-es-采集\\原始日志\\日志筛选");
+                , ".log", "F:\\Desktop\\2019-11-28-北京-安管\\北京-es-采集\\原始日志\\日志筛选-12-05");
     }
 }
