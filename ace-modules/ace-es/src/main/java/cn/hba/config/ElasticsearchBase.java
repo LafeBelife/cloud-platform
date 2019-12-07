@@ -19,8 +19,7 @@ import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -31,24 +30,26 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Slf4j
 public class ElasticsearchBase {
-
     /**
      * 初始化 带权限登录 es client
      *
      * @return TransportClient
      */
     public RestClient authInit() {
+
+
         try {
-            Props props = new Props(ElasticsearchConstant.AUTH_ES);
+            Props props = new Props( ElasticsearchConstant.AUTH_ES);
+            log.info(props.toString());
             final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
             credentialsProvider.setCredentials(AuthScope.ANY,
                     new UsernamePasswordCredentials(
                             props.getStr(ElasticsearchConstant.USERNAME), props.getStr(ElasticsearchConstant.PASSWORD)));
             String addrMap = props.getStr(ElasticsearchConstant.ADDR_MAP);
-            List<HttpHost> list = new LinkedList<>();
-            HttpHost[] hosts = new HttpHost[10];
             AtomicInteger i = new AtomicInteger(0);
-            JSONUtil.parseObj(addrMap).forEach((k, v) -> hosts[i.getAndIncrement()] = (new HttpHost(k, NumberUtil.parseInt(String.valueOf(v)))));
+            JSONObject object = JSONUtil.parseObj(addrMap);
+            HttpHost[] hosts = new HttpHost[object.size()];
+            object.forEach((k, v) -> hosts[i.getAndIncrement()] = (new HttpHost(k, NumberUtil.parseInt(String.valueOf(v)))));
             // 该方法接收HttpAsyncClientBuilder的实例作为参数，对其修改后进行返回
             RestClientBuilder builder = RestClient.builder(hosts).setHttpClientConfigCallback(build -> {
                 //提供一个默认凭据

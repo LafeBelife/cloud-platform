@@ -55,7 +55,7 @@ public class FileLogUtil {
         for (String h3c : wafIp.split("\t")) {
             map.put(h3c, wsWaf);
         }
-        String rsRaName = "瑞树防爬-";
+        String rsRaName = "瑞数防爬-";
         String rsRaIp = "192.168.109.40\t192.168.107.100\t192.168.103.60\t192.168.92.104\t192.168.92.103\t192.168.50.1\t192.168.101.18\t" +
                 "192.168.113.203";
         for (String h3c : rsRaIp.split("\t")) {
@@ -70,6 +70,11 @@ public class FileLogUtil {
         String kbIp = "192.168.6.115\t192.168.6.114\t192.168.134.117\t192.168.134.116\t192.168.134.115\t192.168.134.114";
         for (String h3c : kbIp.split("\t")) {
             map.put(h3c, kpName);
+        }
+        String name360 = "360-跨网防火墙-";
+        String ip360 = "192.168.131.9\t192.168.131.12";
+        for (String h3c : ip360.split("\t")) {
+            map.put(h3c, name360);
         }
     }
 
@@ -90,6 +95,6 @@ public class FileLogUtil {
 
     public static void main(String[] args) {
 //        updateFileName("F:\\Desktop\\2019-11-28-北京-安管\\北京-es-采集\\原始日志\\flume日志", ".log");
-        updateFileByName("D:\\Desktop\\HB\\北京-国办-安管\\日志筛选-12-05");
+        updateFileByName("F:\\Desktop\\2019-11-28-北京-安管\\北京-es-采集\\原始日志\\日志筛选-12-05");
     }
 }
