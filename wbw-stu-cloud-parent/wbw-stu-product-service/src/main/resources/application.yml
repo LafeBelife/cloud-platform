@@ -1,0 +1,19 @@
+server:
+  port: 9913
+spring:
+  application:
+    name: wbw-stu-product-service
+logging:
+  file: logs/${spring.application.name}.log
+
+eureka:
+  instance:
+    ip-address: true
+  client:
+    register-with-eureka: true
+    #    获取已注册的服务
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:9911/eureka
+    #    同步时间秒数
+    registry-fetch-interval-seconds: 30

@@ -1,0 +1,48 @@
+server:
+  port: 9912
+spring:
+  application:
+    name: wbw-stu-user-service
+  #  数据源连接
+  datasource:
+    url: jdbc:h2:mem:h2test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    platform: h2
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  #   jpa
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      # create 启动时删数据库中的表，然后创建，退出时不删除数据表
+      # create-drop 启动时删数据库中的表，然后创建，退出时删除数据表 如果表不存在报错
+      # update 如果启动时表格式不一致则更新表，原有数据保留
+      # validate 项目启动表结构进行校验 如果不一致则报错
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true
+  #  h2
+  h2:
+    console:
+      enabled: true
+      #      web控制台 url/path
+      path: /h2-console
+      settings:
+        trace: false
+        web-allow-others: false
+logging:
+  file: logs/${spring.application.name}.log
+  level:
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    cn.wbw.study: debug
+eureka:
+  instance:
+    ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:9911/eureka

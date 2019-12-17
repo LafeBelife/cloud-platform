@@ -49,7 +49,7 @@ public class LambdaDemo01 {
         System.out.println(Stream.of("张三", "李四", "旺旺").filter(e -> e.contains("三")).count());
         Stream.of("hello aaa").map(e -> e.split(" ")).flatMap(Arrays::stream).forEach(System.out::println);
 
-        Stream.of("张三", "李四", "王五", "赵六", "张无忌", "张翼德","张啊", "张先知").filter(e -> e.startsWith("张"))
+        Stream.of("张三", "李四", "王五", "赵六", "张无忌", "张翼德", "张啊", "张先知").filter(e -> e.startsWith("张"))
                 .sorted(Comparator.naturalOrder()).collect(Collectors.toList()).forEach(System.out::println);
 
     }
