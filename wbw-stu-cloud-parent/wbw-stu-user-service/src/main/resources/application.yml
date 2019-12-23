@@ -1,11 +1,12 @@
 server:
-  port: 9912
+  port: 9913
 spring:
   application:
     name: wbw-stu-user-service
   #  数据源连接
   datasource:
-    url: jdbc:h2:mem:h2test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#    url: jdbc:h2:tcp://127.0.0.1:9092/~/stu-db;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:~/stu-db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     platform: h2
     username: sa
     password:
@@ -32,7 +33,7 @@ spring:
       path: /h2-console
       settings:
         trace: false
-        web-allow-others: false
+        web-allow-others: true
 logging:
   file: logs/${spring.application.name}.log
   level:
