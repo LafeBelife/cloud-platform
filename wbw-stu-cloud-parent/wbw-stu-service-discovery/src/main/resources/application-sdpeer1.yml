@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: wbw-cloud-service-discovery
+server:
+  port: 8260
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://sdpeer2:8262/eureka,http://sdpeer3:8263/eureka
+  instance:
+    hostname: sdpeer1

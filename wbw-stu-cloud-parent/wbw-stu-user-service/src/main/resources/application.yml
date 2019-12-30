@@ -41,9 +41,10 @@ logging:
     cn.wbw.study: debug
 eureka:
   instance:
-    ip-address: true
+    ip-address: 10.0.1.89
+    prefer-ip-address: true
   client:
     register-with-eureka: true
     fetch-registry: false
     service-url:
-      defaultZone: http://localhost:9911/eureka
+      defaultZone: http://localhost:8260/eureka,http://localhost:8262/eureka,http://localhost:8263/eureka

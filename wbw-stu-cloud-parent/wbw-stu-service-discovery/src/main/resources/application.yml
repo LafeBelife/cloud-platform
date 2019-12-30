@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: wbw-cloud-service-discovery
+  profiles:
+    active: sdpeer1
 
 logging:
   file: logs/${spring.application.name}.log

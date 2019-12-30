@@ -99,7 +99,7 @@ public class UdpSendUtil {
             System.out.print("请输入日志名称:\t");
             Scanner scanner = new Scanner(System.in);
             in = scanner.next();
-            udpSendUtil.readSyslogSend("F:\\Desktop\\2019-11-28-北京-安管\\北京-es-采集\\原始日志\\日志筛选-12-05"
+            udpSendUtil.readSyslogSend("F:\\Desktop\\2019-11-28-北京-安管\\北京-es-采集\\原始日志\\日志筛选\\已完成"
                     , 514, ".log", in);
         } while (StrUtil.isNotBlank(in));
     }

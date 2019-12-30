@@ -1,0 +1,10 @@
+server:
+  port: 8262
+eureka:
+  client:
+    service-url:
+      defaultZone: http://sdpeer1:8260/eureka,http://sdpeer3:8263/eureka
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    hostname: sdpeer2

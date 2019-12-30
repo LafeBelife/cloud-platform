@@ -80,7 +80,7 @@ public class FileLogUtil {
     }
 
     public static void main(String[] args) {
-        updateFileNameSuffix("F:\\Desktop\\2019-11-28-北京-安管\\北京-es-采集\\原始日志\\flume日志", ".log");
+         updateFileNameSuffix("F:\\Desktop\\2019-11-28-北京-安管\\北京-es-采集\\原始日志\\flume日志", ".log");
         updateFileByName("F:\\Desktop\\2019-11-28-北京-安管\\北京-es-采集\\原始日志\\日志筛选-12-05");
     }
 }

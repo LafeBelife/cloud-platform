@@ -17,6 +17,6 @@ public class ThreadSyncDemo {
         m();
     }
 
-    public static synchronized void m() {
+    private static synchronized void m() {
     }
 }
